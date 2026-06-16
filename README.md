@@ -1,46 +1,60 @@
 # MedExplain AI ⚕️
 
-I built MedExplain AI to solve a problem many of us face: understanding complex medical reports. It's a full-stack React application that ingests clinical reports (PDFs or images), extracts the text using OCR, and produces a patient-friendly, structured summary using AI. 
+**An AI-powered web application that translates complex medical reports into simple, patient-friendly explanations.**
 
-I designed this project to work entirely from the browser for guests, but I also integrated Supabase for authenticated users to save their history securely.
+## The Problem I'm Solving
 
-## Features I've Implemented ✨
+Have you ever received a medical test report filled with intimidating jargon, confusing numbers, and complex scientific terms? 
 
-- **Client-Side OCR**: I integrated `pdfjs-dist` for PDFs and `tesseract.js` for images so that text extraction happens right in your browser.
-- **AI Summarization**: I built a local summarization engine that connects directly to NVIDIA's advanced LLMs (like Llama 3) to process the extracted text and output a highly structured JSON summary.
-- **Guest Mode & Auth**: You can use the app without signing in (your reports are temporarily kept in memory for privacy), or you can sign in to save your history to a PostgreSQL database.
-- **Exporting**: I added the ability to download the AI summaries as nicely formatted PDFs or TXT files.
+For most patients, reading their own health reports is an anxiety-inducing experience because they simply cannot understand what the data means before their next doctor's appointment. The terminology is inaccessible, the reference ranges are confusing, and the overall implications of the tests are rarely stated in plain English. 
+
+## The Solution
+
+I built **MedExplain AI** from scratch to bridge this gap. 
+
+It is a full-stack web application that allows anyone to securely upload their clinical reports (as PDFs or images). The application uses Optical Character Recognition (OCR) to extract the raw text, and then leverages advanced AI to analyze the findings. 
+
+MedExplain AI instantly generates a highly structured, easy-to-read breakdown that explains:
+1. **What test was done and why**
+2. **What the results indicate (normal vs. abnormal)**
+3. **Potential medical conditions**
+4. **Simple definitions for complex medical terms**
+5. **Actionable advice and next steps**
+
+## Key Features ✨
+
+- **Client-Side OCR**: Uses `pdfjs-dist` and `tesseract.js` to extract text from PDFs and images locally in the browser.
+- **Intelligent Summarization**: Connects directly to NVIDIA's advanced LLMs (Llama 3.1) to process medical data and return a rigorously structured summary.
+- **Privacy-First Guest Mode**: Users can analyze reports without signing in. Guest data is kept strictly in local memory and disappears when the tab is closed.
+- **Persistent Storage**: Authenticated users can sign in via Supabase to securely save their report history to a PostgreSQL database.
+- **Exporting Options**: Summaries can be instantly downloaded as formatted PDFs or TXT files to share with family or healthcare providers.
 
 ## Tech Stack
-I chose the following technologies to build this:
+
 - **Frontend Framework**: TanStack Start (React + TypeScript)
-- **Styling**: Tailwind CSS 
-- **Backend & Auth**: Supabase (PostgreSQL, Auth, Storage)
-- **AI Integration**: Custom fetch client connecting to NVIDIA AI endpoints
+- **Styling**: Tailwind CSS & shadcn/ui
+- **Backend & Database**: Supabase (PostgreSQL, Auth, Storage)
+- **AI Processing**: NVIDIA AI Endpoints (meta/llama-3.1-70b-instruct)
 
-## How to Run This Locally
+## Local Setup
 
-If you'd like to run my project on your own machine, follow these steps:
+If you want to run this project locally on your machine:
 
-1. **Prerequisites**: Ensure you have Node.js 18+ installed.
-2. **Install Dependencies**:
+1. **Install Dependencies**:
    ```bash
    npm install
    ```
-3. **Environment Setup**: Create a `.env` file in the root directory. You will need your own Supabase project keys and an NVIDIA API key.
+2. **Environment Variables**: Create a `.env` file in the root directory:
    ```env
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
-   
-   VITE_AI_GATEWAY_URL=https://integrate.api.nvidia.com/v1/chat/completions
    VITE_AI_API_KEY=your_nvidia_api_key
-   VITE_AI_MODEL=meta/llama3-70b-instruct
    ```
-4. **Start the Dev Server**:
+3. **Run the Development Server**:
    ```bash
    npm run dev
    ```
-5. Open `http://localhost:5173` in your browser.
+4. Open `http://localhost:5173` in your browser.
 
-## Architecture Decisions
-When I was building this, I originally considered using serverless edge functions for the AI summarization. However, I decided to move the AI fetching logic directly to the client side (`src/lib/summarize.ts`) to make it easier to run locally without needing complex deployment setups. This makes the project much more accessible to test!
+---
+*Disclaimer: MedExplain AI is an informational project built for educational purposes. It does not provide professional medical advice, diagnosis, or treatment.*
