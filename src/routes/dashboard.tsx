@@ -7,7 +7,16 @@ import { Progress } from "@/components/ui/progress";
 import { ThemeToggle } from "@/lib/theme";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
-import { Activity, Upload, FileText, Loader2, Search, Trash2, ArrowRight, UserRound } from "lucide-react";
+import {
+  Activity,
+  Upload,
+  FileText,
+  Loader2,
+  Search,
+  Trash2,
+  ArrowRight,
+  UserRound,
+} from "lucide-react";
 import { toast } from "sonner";
 import { ACCEPTED_TYPES, MAX_BYTES, extractTextFromFile } from "@/lib/ocr";
 import { summarizeReport } from "@/lib/summarize";
@@ -76,7 +85,7 @@ function Dashboard() {
     try {
       let reportId: string;
       let path = "";
-      
+
       if (user) {
         path = `${user.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
         const up = await supabase.storage
@@ -286,7 +295,10 @@ function Dashboard() {
         ) : (
           <div className="mt-4 grid gap-3">
             {filtered.map((r) => (
-              <Card key={r.id} className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <Card
+                key={r.id}
+                className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between"
+              >
                 <div className="flex min-w-0 items-center gap-3">
                   <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
                     <FileText className="h-5 w-5" />

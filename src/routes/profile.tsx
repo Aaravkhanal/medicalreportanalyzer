@@ -41,7 +41,12 @@ function ProfilePage() {
       ]);
 
       const authEmail = authData.user?.email ?? user.email ?? "";
-      setFullName(profile?.full_name ?? user.user_metadata?.full_name ?? user.user_metadata?.name ?? authEmail.split("@")[0]);
+      setFullName(
+        profile?.full_name ??
+          user.user_metadata?.full_name ??
+          user.user_metadata?.name ??
+          authEmail.split("@")[0],
+      );
       setEmail(authEmail);
       setLoaded(true);
     }
@@ -65,13 +70,17 @@ function ProfilePage() {
     if (!emailCheck.success) return toast.error(emailCheck.error.issues[0].message);
 
     const passwordCheck = newPassword ? passwordSchema.safeParse(newPassword) : null;
-    if (passwordCheck && !passwordCheck.success) return toast.error(passwordCheck.error.issues[0].message);
+    if (passwordCheck && !passwordCheck.success)
+      return toast.error(passwordCheck.error.issues[0].message);
 
     setSaving(true);
     try {
       const errors: string[] = [];
 
-      const profileUpdate = await supabase.from("profiles").update({ full_name: fullName }).eq("id", user.id);
+      const profileUpdate = await supabase
+        .from("profiles")
+        .update({ full_name: fullName })
+        .eq("id", user.id);
       if (profileUpdate.error) errors.push(profileUpdate.error.message);
 
       const metadataUpdate = await supabase.auth.updateUser({ data: { full_name: fullName } });
@@ -130,7 +139,9 @@ function ProfilePage() {
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="max-w-2xl">
           <h1 className="text-2xl font-bold sm:text-3xl">Your profile</h1>
-          <p className="mt-2 text-muted-foreground">Edit your account details or update your password.</p>
+          <p className="mt-2 text-muted-foreground">
+            Edit your account details or update your password.
+          </p>
         </div>
 
         <form onSubmit={saveProfile} className="mt-8 space-y-6">
@@ -152,7 +163,12 @@ function ProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
             </div>
 
@@ -178,7 +194,11 @@ function ProfilePage() {
                 <p className="text-sm font-medium">Current password</p>
                 <p className="text-sm text-muted-foreground">••••••••</p>
               </div>
-              <Button type="button" variant="outline" onClick={() => newPasswordRef.current?.focus()}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => newPasswordRef.current?.focus()}
+              >
                 Edit
               </Button>
             </div>

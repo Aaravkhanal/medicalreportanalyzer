@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/lib/theme";
 import { toast } from "sonner";
+import { ReportChat } from "@/components/ReportChat";
 
 export const Route = createFileRoute("/report/$id")({ component: ReportPage });
 
@@ -86,7 +87,7 @@ function ReportPage() {
         setBusy(false);
         return;
       }
-      
+
       const { data, error } = await supabase.from("reports").select("*").eq("id", id).single();
       if (error) {
         toast.error(error.message);
@@ -157,7 +158,7 @@ function ReportPage() {
     if (s.medical_conditions?.length) {
       line("Potential Medical Conditions", 13, true);
       s.medical_conditions.forEach((c) =>
-        line(`• ${c.condition} (${c.likelihood}): ${c.explanation}`)
+        line(`• ${c.condition} (${c.likelihood}): ${c.explanation}`),
       );
       y += 6;
     }
@@ -185,14 +186,16 @@ function ReportPage() {
       "SUMMARY",
       s.simplified_summary,
       "",
-      ...(s.test_explanation ? [
-        "TEST DETAILS",
-        `What test was done: ${s.test_explanation.tests_performed}`,
-        `Why it was done: ${s.test_explanation.reason_for_test}`,
-        `Overall indication: ${s.test_explanation.overall_indication}`,
-        `Actionable advice: ${s.test_explanation.actionable_advice}`,
-        "",
-      ] : []),
+      ...(s.test_explanation
+        ? [
+            "TEST DETAILS",
+            `What test was done: ${s.test_explanation.tests_performed}`,
+            `Why it was done: ${s.test_explanation.reason_for_test}`,
+            `Overall indication: ${s.test_explanation.overall_indication}`,
+            `Actionable advice: ${s.test_explanation.actionable_advice}`,
+            "",
+          ]
+        : []),
       s.emergency_alert?.present ? `URGENT: ${s.emergency_alert.reason}\n` : "",
       "KEY FINDINGS",
       ...s.key_findings.map((f) => "• " + f),
@@ -201,7 +204,9 @@ function ReportPage() {
       ...s.abnormal_values.map((a) => `• ${a.name}: ${a.value} (${a.severity}) — ${a.explanation}`),
       "",
       "POTENTIAL MEDICAL CONDITIONS",
-      ...(s.medical_conditions || []).map((c) => `• ${c.condition} (${c.likelihood}): ${c.explanation}`),
+      ...(s.medical_conditions || []).map(
+        (c) => `• ${c.condition} (${c.likelihood}): ${c.explanation}`,
+      ),
       "",
       "MEDICAL TERMS",
       ...s.term_explanations.map((t) => `• ${t.term}: ${t.meaning}`),
@@ -293,7 +298,11 @@ function ReportPage() {
               report.mime_type === "application/pdf" ? (
                 <iframe src={fileUrl} className="h-[45vh] w-full sm:h-[70vh]" title="original" />
               ) : (
-                <img src={fileUrl} alt="report" className="max-h-[45vh] w-full object-contain sm:max-h-[70vh]" />
+                <img
+                  src={fileUrl}
+                  alt="report"
+                  className="max-h-[45vh] w-full object-contain sm:max-h-[70vh]"
+                />
               )
             ) : (
               <div className="p-6 text-sm text-muted-foreground">Preview unavailable</div>
@@ -323,22 +332,32 @@ function ReportPage() {
                   </section>
                   {s.test_explanation && (
                     <section>
-                      <h3 className="mb-2 text-sm font-semibold text-primary">Test details & explanation</h3>
+                      <h3 className="mb-2 text-sm font-semibold text-primary">
+                        Test details & explanation
+                      </h3>
                       <div className="space-y-3 rounded-lg border bg-muted/30 p-4">
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">What test was done</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            What test was done
+                          </p>
                           <p className="mt-0.5 text-sm">{s.test_explanation.tests_performed}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Why it was likely done</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            Why it was likely done
+                          </p>
                           <p className="mt-0.5 text-sm">{s.test_explanation.reason_for_test}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">What the results indicate</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            What the results indicate
+                          </p>
                           <p className="mt-0.5 text-sm">{s.test_explanation.overall_indication}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actionable advice</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            Actionable advice
+                          </p>
                           <p className="mt-0.5 text-sm">{s.test_explanation.actionable_advice}</p>
                         </div>
                       </div>
@@ -431,6 +450,7 @@ function ReportPage() {
           </Card>
         </div>
       </main>
+      <ReportChat reportText={report.extracted_text || ""} />
     </div>
   );
 }

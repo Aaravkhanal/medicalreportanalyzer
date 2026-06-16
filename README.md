@@ -4,17 +4,18 @@
 
 ## The Problem I'm Solving
 
-Have you ever received a medical test report filled with intimidating jargon, confusing numbers, and complex scientific terms? 
+Have you ever received a medical test report filled with intimidating jargon, confusing numbers, and complex scientific terms?
 
-For most patients, reading their own health reports is an anxiety-inducing experience because they simply cannot understand what the data means before their next doctor's appointment. The terminology is inaccessible, the reference ranges are confusing, and the overall implications of the tests are rarely stated in plain English. 
+For most patients, reading their own health reports is an anxiety-inducing experience because they simply cannot understand what the data means before their next doctor's appointment. The terminology is inaccessible, the reference ranges are confusing, and the overall implications of the tests are rarely stated in plain English.
 
 ## The Solution
 
-I built **MedExplain AI** from scratch to bridge this gap. 
+I built **MedExplain AI** from scratch to bridge this gap.
 
-It is a full-stack web application that allows anyone to securely upload their clinical reports (as PDFs or images). The application uses Optical Character Recognition (OCR) to extract the raw text, and then leverages advanced AI to analyze the findings. 
+It is a full-stack web application that allows anyone to securely upload their clinical reports (as PDFs or images). The application uses Optical Character Recognition (OCR) to extract the raw text, and then leverages advanced AI to analyze the findings.
 
 MedExplain AI instantly generates a highly structured, easy-to-read breakdown that explains:
+
 1. **What test was done and why**
 2. **What the results indicate (normal vs. abnormal)**
 3. **Potential medical conditions**
@@ -57,4 +58,5 @@ If you want to run this project locally on your machine:
 4. Open `http://localhost:5173` in your browser.
 
 ---
-*Disclaimer: MedExplain AI is an informational project built for educational purposes. It does not provide professional medical advice, diagnosis, or treatment.*
+
+_Disclaimer: MedExplain AI is an informational project built for educational purposes. It does not provide professional medical advice, diagnosis, or treatment._
